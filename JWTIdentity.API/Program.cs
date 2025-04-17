@@ -40,6 +40,11 @@ builder.Services.AddAuthentication(config =>
 
 });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireAuthenticatedUser().RequireRole("Admin"));
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
