@@ -13,14 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddScoped<IJwtService, JwtService>();
-
+builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection(nameof(TokenOptions)));
 builder.Services.AddAuthentication(config =>
 {
     config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+}).AddJwtBearer(options =>
 {
     var jwtTokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+    
 
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new()
@@ -40,10 +41,7 @@ builder.Services.AddAuthentication(config =>
 
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireAuthenticatedUser().RequireRole("Admin"));
-});
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -52,7 +50,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.Configure<TokenOptions>(builder.Configuration.GetSection(nameof(TokenOptions)));
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -66,6 +64,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();

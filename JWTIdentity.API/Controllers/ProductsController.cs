@@ -5,14 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JWTIdentity.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "AdminPolicy")]
+  
     public class ProductsController(AppDbContext _context) : ControllerBase
     {
 
         
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             var products = await _context.Products.ToListAsync();
