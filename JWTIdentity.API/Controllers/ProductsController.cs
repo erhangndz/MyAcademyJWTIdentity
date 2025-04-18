@@ -12,8 +12,8 @@ namespace JWTIdentity.API.Controllers
     public class ProductsController(AppDbContext _context) : ControllerBase
     {
 
-        
-        [HttpGet("GetAll")]
+     
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var products = await _context.Products.ToListAsync();

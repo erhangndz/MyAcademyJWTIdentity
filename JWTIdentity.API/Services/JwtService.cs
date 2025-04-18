@@ -9,16 +9,11 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace JWTIdentity.API.Services
 {
-    public class JwtService : IJwtService
+    public class JwtService(IOptions<jwt.TokenOptions> tokenOptions, UserManager<AppUser> _userManager) : IJwtService
     {
-        private readonly jwt.TokenOptions _tokenOptions;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly jwt.TokenOptions _tokenOptions = tokenOptions.Value;
+        
 
-        public JwtService(IOptions<jwt.TokenOptions> tokenOptions, UserManager<AppUser> userManager)
-        {
-            _tokenOptions = tokenOptions.Value;
-            _userManager = userManager;
-        }
         public async Task<string> CreateTokenAsync(AppUser user)
         {
             SymmetricSecurityKey symmetricSecurityKey = new(Encoding.UTF8.GetBytes(_tokenOptions.Key));
