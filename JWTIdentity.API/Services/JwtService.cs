@@ -1,5 +1,5 @@
 ﻿using JWTIdentity.API.Entities;
-using jwt= JWTIdentity.API.Options;
+using JWTIdentity.API.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -9,9 +9,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace JWTIdentity.API.Services
 {
-    public class JwtService(IOptions<jwt.TokenOptions> tokenOptions, UserManager<AppUser> _userManager) : IJwtService
+    public class JwtService(IOptions<JwtTokenOptions> tokenOptions, UserManager<AppUser> _userManager) : IJwtService
     {
-        private readonly jwt.TokenOptions _tokenOptions = tokenOptions.Value;
+        private readonly JwtTokenOptions _tokenOptions = tokenOptions.Value;
         
 
         public async Task<string> CreateTokenAsync(AppUser user)

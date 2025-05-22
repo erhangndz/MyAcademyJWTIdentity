@@ -1,6 +1,6 @@
 ﻿namespace JWTIdentity.API.Options
 {
-    public class TokenOptions
+    public class JwtTokenOptions
     {
         public string Issuer { get; set; }
         public string Audience { get; set; }
